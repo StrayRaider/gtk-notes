@@ -1,0 +1,20 @@
+        self.myliststore = Gtk.ListStore(bool,bool,str)
+        self.treeview = Gtk.TreeView(self.myliststore)
+
+        for n, header_text in enumerate(["Aktive", "Warning", "Text"]):
+            if header_text in ["Aktive", "Warning"]:
+                cell = Gtk.CellRendererToggle()
+                cell.connect("toggled", self.on_sync_treeview_button_toggled, n, header_text )
+                column = Gtk.TreeViewColumn(header_text, cell)
+                column.add_attribute(cell, "active", n)
+
+            else:
+                cell = Gtk.CellRendererText()
+                cell.set_property('editable', True)
+                column = Gtk.TreeViewColumn(header_text, cell, text=n)
+            column.set_sort_column_id(n)
+            self.treeview.append_column(column)
+        self.myliststore.append([True, False, "Super6!"])
+        self.myliststore.append([True, True, "Super7!"])
+        self.myliststore.append([False, True, "Super8!"])
+        self.main_box.pack_start(self.treeview, 0, 0, 10) 
